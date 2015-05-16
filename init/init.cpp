@@ -972,7 +972,7 @@ static void selinux_initialize(bool in_kernel_domain) {
             security_failure();
         }
 
-        bool is_enforcing = selinux_is_enforcing();
+        bool is_enforcing = false;
         security_setenforce(is_enforcing);
 
         if (write_file("/sys/fs/selinux/checkreqprot", "0") == -1) {
