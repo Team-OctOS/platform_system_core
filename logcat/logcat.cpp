@@ -284,6 +284,7 @@ static void show_help(const char *cmd)
                     "                  other pruning activity is oldest first. Special case ~!\n"
                     "                  represents an automatic quicker pruning for the noisiest\n"
                     "                  UID as determined by the current statistics.\n"
+                    "  -C              colored output\n"
                     "  -P '<list> ...' set prune white and ~black list, using same format as\n"
                     "                  printed above. Must be quoted.\n");
 
@@ -492,7 +493,7 @@ int main(int argc, char **argv)
     for (;;) {
         int ret;
 
-        ret = getopt(argc, argv, ":cdDLt:T:gG:sQf:r:n:v:b:BSpP:");
+        ret = getopt(argc, argv, ":cdDLt:T:gG:sQf:r:n:v:b:BSpCP:");
 
         if (ret < 0) {
             break;
@@ -597,6 +598,10 @@ int main(int argc, char **argv)
                 setPruneList = optarg;
             break;
 
+            case 'C':
+                setLogFormat ("color");
+            break;
+
             case 'b': {
                 if (strcmp(optarg, "all") == 0) {
                     while (devices) {
@@ -649,7 +654,7 @@ int main(int argc, char **argv)
             break;
 
             case 'f':
-                if ((tail_time == log_time::EPOCH) && (tail_lines != 0)) {
+                if ((tail_time == log_time::EPOCH) && (tail_lines == 0)) {
                     tail_time = lastLogTime(optarg);
                 }
                 // redirect output to a file
